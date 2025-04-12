@@ -8,6 +8,7 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"io/ioutil"
 	"net/http"
+	"os"
 	"time"
 )
 
@@ -46,8 +47,8 @@ func prometheusMiddleware() fiber.Handler {
 	}
 }
 
-func readFileUnsafe() {
-	data, err := ioutil.ReadFile("")
+func readFileUnsafe(filename string) {
+	data, err := ioutil.ReadFile(filename)
 	if err != nil {
 		fmt.Println("Ошибка чтения файла:", err)
 		return
@@ -71,6 +72,8 @@ func main() {
 
 	app.Listen(":8080")
 
-	// pr7
-	readFileUnsafe()
+	if len(os.Args) > 1 {
+		userInput := os.Args[1]
+		readFileUnsafe(userInput)
+	}
 }
